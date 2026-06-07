@@ -52,38 +52,76 @@ def get_card_choice(player):
 
 deck = Deck()
 player1 = Player("Player 1")
+player2 = Player("Player 2")
 
 for i in range(5):
     player1.draw_card(deck)
+for i in range(5):
+    player2.draw_card(deck)
 
 top_card = deck.draw()
 
-input("Press Enter to clear the screen and start your turn...")
-clear_screen()
+while True:
+    input("Press Enter to clear the screen and start your turn...")
+    clear_screen()
 
-print("Top card:")
-print(top_card)
-
-print_hand(player1)
-
-choice = get_card_choice(player1)
-chosen_card = player1.hand[choice]
-
-print("You chose:")
-print(chosen_card)
-
-if chosen_card.can_play_on(top_card):
-
-    top_card = player1.play_card(choice)
-
-    print("New top card:")
+    print("Top card:")
     print(top_card)
 
-else:
-    print("You cannot play this card.")
-    print("You need to draw a card.")
-
-    player1.draw_card(deck)
-
-    print("Your hand after drawing:")
     print_hand(player1)
+
+    choice = get_card_choice(player1)
+    chosen_card = player1.hand[choice]
+
+    print("You chose:")
+    print(chosen_card)
+
+    if chosen_card.can_play_on(top_card):
+
+        top_card = player1.play_card(choice)
+        if player1.hand == []:
+            print(f"{player1.name} wins!")
+            break
+        print("New top card:")
+        print(top_card)
+
+    else:
+        print("You cannot play this card.")
+        print("You need to draw a card.")
+
+        player1.draw_card(deck)
+
+        print("Your hand after drawing:")
+        print_hand(player1)
+    
+    input("Press Enter to clear the screen and start your turn...")
+    clear_screen()
+
+    print("Top card:")
+    print(top_card)
+
+    print_hand(player2)
+
+    choice = get_card_choice(player2)
+    chosen_card = player2.hand[choice]
+
+    print("You chose:")
+    print(chosen_card)
+
+    if chosen_card.can_play_on(top_card):
+
+        top_card = player2.play_card(choice)
+        if player2.hand == []:
+            print(f"{player2.name} wins!")
+            break
+        print("New top card:")
+        print(top_card)
+
+    else:
+        print("You cannot play this card.")
+        print("You need to draw a card.")
+
+        player2.draw_card(deck)
+
+        print("Your hand after drawing:")
+        print_hand(player2)
