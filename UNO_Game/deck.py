@@ -8,7 +8,7 @@ class Deck:
         self.shuffle()
 
     def create_deck(self):
-        colors = ["red", "blue", "green", "yellow"]
+        colors = ["Red", "Blue", "Green", "Yellow"]
         values = list(range(0,9))
         for color in colors:
             for value in values:
