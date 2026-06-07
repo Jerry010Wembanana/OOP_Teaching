@@ -14,12 +14,15 @@ def print_cards_side_by_side(cards):
     rendered_cards = []
 
     for card in cards:
-        rendered_cards.append(card.get_colored_lines())
+        rendered_cards.append(str(card).split("\n"))
 
     for line_number in range(7):
+        line = ""
+
         for card_lines in rendered_cards:
-            print(card_lines[line_number], end="  ")
-        print()
+            line += card_lines[line_number] + "  "
+
+        print(line)
 
 
 def print_hand(player):
