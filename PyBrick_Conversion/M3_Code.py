@@ -1,41 +1,38 @@
-# Do NOT use RUN button within IDE!
-# For uploading code to Hub, go to https://code.pybricks.com/
-
-from pybricks.hubs import PrimeHub
-from pybricks.pupdevices import Motor, ColorSensor
-from pybricks.parameters import Port, Stop, Direction
+from pybricks.pupdevices import Motor
+from pybricks.parameters import Port
 from pybricks.tools import wait
 
-hub = PrimeHub()
-left_motor = Motor(Port.A)
-right_motor = Motor(Port.E)
+# Standard MicroPython modules
+from usys import stdin, stdout
+from uselect import poll
 
-attachment_c = Motor(Port.C)
-attachment_f = Motor(Port.F)
+motor = Motor(Port.A)
 
-left_color = ColorSensor(Port.B)
-right_color = ColorSensor(Port.D)
+# Optional: Register stdin for polling. This allows
+# you to wait for incoming data without blocking.
+keyboard = poll()
+keyboard.register(stdin)
 
-def stop_drive():
-    left_motor.stop()
-    right_motor.stop()
+while True:
 
-def set_drive_power(left_power, right_power):
-    left_motor.run(left_power)
-    right_motor.run(right_power)
+    # Let the remote program know we are ready for a command.
+    stdout.buffer.write(b"rdy")
 
-def main():
-    hub.imu.reset_heading(0)
+    # Optional: Check available input.
+    while not keyboard.poll(0):
+        # Optional: Do something here.
+        wait(10)
 
-    set_drive_power(30,30)
-    wait(1000)
+    # Read three bytes.
+    cmd = stdin.buffer.read(3)
 
-    stop_drive()
-    wait(500)
-
-    # set_drive_power(-30,30) # Left Turn hold position
-    # set_drive_power(0,30)
-
-    attachment_c.run_angle(300,90,then=Stop.HOLD,wait=True)
-    attachment_f.run_angle(300,90,then=Stop.HOLD,wait=True)
+    # Decide what to do based on the command.
+    if cmd == b"fwd":
+        motor.dc(50)
+    elif cmd == b"rev":
+        motor.dc(-50)
+    elif cmd == b"bye":
+        break
+    else:
+        motor.stop()
 
