@@ -1,4 +1,11 @@
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor
+from pybricks.parameters import Port, Stop
 from pybricks.tools import wait, StopWatch
+
+hub = PrimeHub()
+left_motor = Motor(Port.A)
+right_motor = Motor(Port.E)
 
 def limit_speed(speed):
     if speed > 1000:
@@ -40,7 +47,7 @@ def drive_straight_pid(base_speed, duration_ms, target_yaw=0):
 
         correction = Kp * error + Ki * integral + Kd * derivative
 
-        left_speed = limit_speed(base_speed - correction)
+        left_speed = limit_speed(-base_speed + correction)
         right_speed = limit_speed(base_speed + correction)
 
         set_drive_speed(left_speed, right_speed)
